@@ -6,6 +6,12 @@ from matplotlib import pyplot
 import LoadVehicle
 
 def LonSim(tgt, start, eul, dt, t):
+    #tgt   - Target locations (m) x,z coordinates - Expected array: [x, z]
+    #start - Vehicle start location (m) x,z coordinates - Expected array [x, z]
+    #eul   - euler orientation angles roll pitch yaw (rad) - Expected array [roll, pitch, yaw]
+    #dt    - timestep value (s) expected to be small float value eg. 0.001
+    #t     - total run time of the simulation (s) expected to be a single value in seconds eg. 50.0
+
     #Load the vehicle 3D Mesh (unsw), the left flap (flap_l) and the right flap (flap_r)
     [unsw, flap_l, flap_r] = LoadVehicle.LoadUNSW5_Control()
 
@@ -94,7 +100,7 @@ if __name__ == '__main__':
     tgt     = [120000, 30000]
     start   = [0, 40000]
     dt      = 0.001
-    t       = 55
+    t       = 5
     eul     = [0, 0, 0]
     LonSim(tgt, start, eul, dt, t)
 
