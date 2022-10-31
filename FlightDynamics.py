@@ -5,6 +5,24 @@ import math
 
 
 def step3DOF(X, C, vehicle, flaperon_l, flaperon_r, dt, g, tgt):
+    #X is the state of the vehicle [u, w, q, e0, e1, e2, e3, x, z] where:
+    #   u - is speed in body x axis (m/s)
+    #   w - is speed in body z axis (m/s)
+    #   q - is rotational rate of body (rad/s)
+    #   e0 - is first quaternion value
+    #   e1 - is second quaternion value
+    #   e2 - is third quaternion value
+    #   e3 - is fourth quaternion value
+    #   x - x coodinate value (m)
+    #   z - z coordinate value (m)
+    #C - c is the control flap deflection in radians
+    #vehicle - vehicle object from LoadVehicle() - specifically unsw
+    #flaperon_l - vehicle object from LoadVehicle() - specifically flap_l
+    #flaperon_r - vehicle object from LoadVehicle() - specifically flap_r
+    #dt  - is our timestep value (s) expected to be around 0.001 or 0.01
+    #g   - gravity value (m/s) have been using 9.81m/s
+    #tgt - coordinate values (m) - expected array: [x, z]
+    #
     # Note State is [u, w, q, e0, e1, e2, e3, x, z]
     # indexes       [0, 1, 2, 3,   4,  5,  6, 7, 8]
     # C is the control position (in 3DOF its just dr)
@@ -58,6 +76,11 @@ def step3DOF(X, C, vehicle, flaperon_l, flaperon_r, dt, g, tgt):
 
 #Inertia Coefficients to reduce complexity of the state change
 def getInertiaCoeffs(Ixx, Iyy, Izz, Ixz):
+    #Ixx mass-moment of inertia Ixx - (m^4)
+    #Iyy mass-moment of inertia Iyy - (m^4)
+    #Izz mass-moment of inertia Izz - (m^4)
+    #Ixz mass-moment of inertia Ixz - (m^4)
+
     C       = np.zeros(10)
     C[0]    = Ixx*Izz - Ixz**2
     C[1]    = Izz/C[0]
@@ -73,6 +96,8 @@ def getInertiaCoeffs(Ixx, Iyy, Izz, Ixz):
 
 #Quaternion angles to Euler Angles
 def q2e(quat):
+    #quat is a quaternion angle array - [e0, e1, e2, e3]
+    #returns eul which is euler angles - [roll, pitch, yaw]
     eul     = np.zeros(3)
     eul[0]  = np.arctan2(2*(quat[0]*quat[1] + quat[2]*quat[3]), 1 - 2*(quat[1]**2 + quat[2]**2))
     eul[1]  = np.arcsin(2*(quat[0]*quat[2]-quat[3]*quat[1]))
@@ -80,6 +105,9 @@ def q2e(quat):
     return eul
 
 def e2q(eul):
+    # eul which is euler angles - [roll, pitch, yaw]
+    # returns quat is a quaternion angle array - [e0, e1, e2, e3]
+
     quat    = np.zeros(4)
 
     cph     = np.cos(eul[0]/2)
@@ -97,9 +125,21 @@ def e2q(eul):
     return quat
 
 def ControlFlaperon3DOF(tgt, X):
+    # X is the state of the vehicle [u, w, q, e0, e1, e2, e3, x, z] where:
+    #   u - is speed in body x axis (m/s)
+    #   w - is speed in body z axis (m/s)
+    #   q - is rotational rate of body (rad/s)
+    #   e0 - is first quaternion value
+    #   e1 - is second quaternion value
+    #   e2 - is third quaternion value
+    #   e3 - is fourth quaternion value
+    #   x - x coodinate value (m)
+    #   z - z coordinate value (m)
     # Note State is [u, w, q, e0, e1, e2, e3, x, z]
     #               [0, 1, 2, 3,   4,  5,  6, 7, 8]
-    # tgt = [x, z]
+    # tgt is the coordinate value of the target = [x, z]
+
+    # returns [dr, dl] which are the left and right flap deflections in radians
     [roll, pitch, yaw] = q2e(X[3:7])
 
     dx = tgt[0] - X[7]

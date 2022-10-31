@@ -4,6 +4,18 @@ import numpy as np
 def BodyToWindAxisConversion(alpha, beta, phi, cx, cy, cz):
     #this method converts the body axis forces into the wind axis forces
     #cx, cy, cz to CL CD and Cy'
+    #Inputs:
+    # alpha - angle of attack (radians)
+    # beta  - sideslip angle (radians)
+    # phi   - roll angle (radians)
+    # cx    - force in body x axis
+    # cy    - force in body y axis
+    # cz    - force in body z axis
+    #Output:
+    # CL - Coefficient of Lift
+    # CD - Coefficient of Drag
+    # CyPrime - Side force in wind axis
+
     ca = math.cos(alpha)
     sa = math.sin(alpha)
     cb = math.cos(beta)
@@ -20,17 +32,30 @@ def BodyToWindAxisConversion(alpha, beta, phi, cx, cy, cz):
 
 def GetDelta(normal, uinf):
     #This method gets the angle between the normal and the wind vector
+    #normal is the normal unit vector [i, j, k] for each panel
+    #uinf is the airflow unit vector [i, j, k]
+
     cosdel = - np.dot(normal, uinf)
     return np.pi / 2 - np.arccos(cosdel)
 
 
 def GetAirflowVector(alpha, beta):
     #returns the normal vector of the airflow direction
+    #alpha is the angle of attack (rad)
+    #beta is the sideslip angle (rad)
     return np.array([math.cos(alpha)*math.cos(beta), -math.sin(beta), math.sin(alpha)*math.cos(beta)])
 
 
 def ComputeNetworkForcesAndMoments(normal, centroid, area, cp, xref, yref, zref):
     #compute the force magnitude
+    #Inputs:
+    # normal is the normal vector for the panel array [i, j, k]
+    # centroid is the coordinate of the panel centroid [x, y, z] (m)
+    # area is the area of the panel (m^2)
+    # cp is the coefficient of pressure for the panel
+    # xref is the center of gravity of the vehicle in the body z axis (m)
+    # yref is the center of gravity of the vehicle in the body z axis (m)
+    # zref is the center of gravity of the vehicle in the body z axis (m)
     fmag = -1 * np.multiply(area, cp.reshape(-1, 1))
 
     #compute the forces on all the individuals elements
@@ -63,6 +88,14 @@ def ComputeNetworkForcesAndMoments(normal, centroid, area, cp, xref, yref, zref)
 
 def RunSHABPy(alpha, beta, vehicle):
     #Returns the forces and moments acting on a mesh. based on panel methods
+    # Inputs:
+    # alpha is the angle of attack (rad)
+    # beta is the sideslip angle (rad)
+    # vehicle is a vehicle object defined in Vehicle.py
+    # Outputs:
+    # [cx, cy, cz] in the body axis, these are the force coefficients in the x y and z axes
+    # [cmx, cmy, cmz] in the body axis, these are the moment coefficients in the x, y and z axes
+    # [cl, cd, cyPrime] in the wind axis, these are the force coefficients for lift, drag and side force respectively.
 
     #get the unit normals, centroids and areas of each panel in the mesh.
     normals     = vehicle.mesh.get_unit_normals()
