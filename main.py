@@ -62,39 +62,39 @@ def LonSim(tgt, start, eul, dt, t):
         [phi[i], theta[i], psi[i]] = FlightDynamics.q2e([e0[i], e1[i], e2[i], e3[i]])
 
     #plotting various
-    pyplot.figure(1)
-    pyplot.plot(time_arr, V)
-    pyplot.plot(time_arr, u)
-    pyplot.plot(time_arr, w)
-    pyplot.legend(['V', 'u', 'w'])
-    pyplot.xlabel('Time (s)')
-    pyplot.ylabel('Speed (m/s)')
-
-    pyplot.figure(2)
-    pyplot.plot(time_arr, theta)
-    pyplot.legend(['theta'])
-    pyplot.xlabel('Time (s)')
-    pyplot.ylabel('Orientation Angle (rad)')
-
-    pyplot.figure(3)
-    pyplot.plot(x, z)
-    pyplot.plot(tgt[0], tgt[1], 'x')
-    pyplot.xlabel('X Position (m)')
-    pyplot.ylabel('Z Position (m)')
-    pyplot.axis('equal')
-    pyplot.grid('on')
-
-    pyplot.figure(4)
-    pyplot.plot(time_arr, q)
-    pyplot.xlabel('time (s)')
-    pyplot.ylabel('pitch rate (rad/s)')
-
-    pyplot.figure(5)
-    pyplot.plot(time_arr, C)
-    pyplot.xlabel('time (s)')
-    pyplot.ylabel('elevator deflection (rad)')
-
-    pyplot.show()
+    # pyplot.figure(1)
+    # pyplot.plot(time_arr, V)
+    # pyplot.plot(time_arr, u)
+    # pyplot.plot(time_arr, w)
+    # pyplot.legend(['V', 'u', 'w'])
+    # pyplot.xlabel('Time (s)')
+    # pyplot.ylabel('Speed (m/s)')
+    #
+    # pyplot.figure(2)
+    # pyplot.plot(time_arr, theta)
+    # pyplot.legend(['theta'])
+    # pyplot.xlabel('Time (s)')
+    # pyplot.ylabel('Orientation Angle (rad)')
+    #
+    # pyplot.figure(3)
+    # pyplot.plot(x, z)
+    # pyplot.plot(tgt[0], tgt[1], 'x')
+    # pyplot.xlabel('X Position (m)')
+    # pyplot.ylabel('Z Position (m)')
+    # pyplot.axis('equal')
+    # pyplot.grid('on')
+    #
+    # pyplot.figure(4)
+    # pyplot.plot(time_arr, q)
+    # pyplot.xlabel('time (s)')
+    # pyplot.ylabel('pitch rate (rad/s)')
+    #
+    # pyplot.figure(5)
+    # pyplot.plot(time_arr, C)
+    # pyplot.xlabel('time (s)')
+    # pyplot.ylabel('elevator deflection (rad)')
+    #
+    # pyplot.show()
 
 if __name__ == '__main__':
     tgt     = [120000, 30000]
@@ -103,4 +103,5 @@ if __name__ == '__main__':
     t       = 5
     eul     = [0, 0, 0]
     LonSim(tgt, start, eul, dt, t)
+
 

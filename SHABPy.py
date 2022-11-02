@@ -98,7 +98,7 @@ def RunSHABPy(alpha, beta, vehicle):
     # [cl, cd, cyPrime] in the wind axis, these are the force coefficients for lift, drag and side force respectively.
 
     #get the unit normals, centroids and areas of each panel in the mesh.
-    normals     = vehicle.mesh.get_unit_normals()
+    normals     = vehicle.mesh.units
     centroids   = vehicle.mesh.centroids
     areas       = vehicle.mesh.areas
     cp          = np.zeros(len(areas))
